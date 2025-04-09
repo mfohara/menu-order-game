@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>メニュー注文ゲーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .category {
+      margin: 20px 0;
+    }
+    .item {
+      display: inline-block;
+      margin: 10px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      width: 120px;
+      background-color: #fff;
+      transition: transform 0.2s;
+    }
+    .item:hover {
+      transform: scale(1.05);
+      border-color: #888;
+    }
+    .item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+    }
+    .total {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .reset-button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff6666;
+      color: white;
+      cursor: pointer;
+    }
+    .reset-button:hover {
+      background-color: #ff4c4c;
+    }
+    .receipt {
+      margin-top: 20px;
+      text-align: left;
+      display: inline-block;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: monospace;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+    .receipt-title {
+      border-bottom: 1px dashed #333;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+    }
+    .receipt-total {
+      border-top: 1px dashed #333;
+      margin-top: 10px;
+      padding-top: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>メニュー注文ゲーム 🍽️</h1>
+  <p>クリックして合計金額を計算しましょう！</p>
+
+  <div class="category">
+    <h2>ドリンク 🥤</h2>
+    <div class="item" onclick="addToTotal('ジュース', 147)">
+      <img src="https://via.placeholder.com/80?text=ジュース" alt="ジュース" />
+      <p>ジュース<br>147円</p>
+    </div>
+    <div class="item" onclick="addToTotal('ソーダ', 163)">
+      <img src="https://via.placeholder.com/80?text=ソーダ" alt="ソーダ" />
+      <p>ソーダ<br>163円</p>
+    </div>
+    <div class="item" onclick="addToTotal('りょくちゃ', 198)">
+      <img src="https://via.placeholder.com/80?text=りょくちゃ" alt="りょくちゃ" />
+      <p>りょくちゃ<br>198円</p>
+    </div>
+    <div class="item" onclick="addToTotal('レモネード', 176)">
+      <img src="https://via.placeholder.com/80?text=レモネード" alt="レモネード" />
+      <p>レモネード<br>176円</p>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>メインディッシュ 🍜🍣</h2>
+    <div class="item" onclick="addToTotal('すし', 823)">
+      <img src="https://via.placeholder.com/80?text=すし" alt="すし" />
+      <p>すし<br>823円</p>
+    </div>
+    <div class="item" onclick="addToTotal('ラーメン', 715)">
+      <img src="https://via.placeholder.com/80?text=ラーメン" alt="ラーメン" />
+      <p>ラーメン<br>715円</p>
+    </div>
+    <div class="item" onclick="addToTotal('カレーライス', 768)">
+      <img src="https://via.placeholder.com/80?text=カレーライス" alt="カレーライス" />
+      <p>カレーライス<br>768円</p>
+    </div>
+    <div class="item" onclick="addToTotal('カツサンド', 682)">
+      <img src="https://via.placeholder.com/80?text=カツサンド" alt="カツサンド" />
+      <p>カツサンド<br>682円</p>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>デザート 🍨🍮</h2>
+    <div class="item" onclick="addToTotal('アイスクリーム', 312)">
+      <img src="https://via.placeholder.com/80?text=アイスクリーム" alt="アイスクリーム" />
+      <p>アイスクリーム<br>312円</p>
+    </div>
+    <div class="item" onclick="addToTotal('プリン', 278)">
+      <img src="https://via.placeholder.com/80?text=プリン" alt="プリン" />
+      <p>プリン<br>278円</p>
+    </div>
+    <div class="item" onclick="addToTotal('もち', 233)">
+      <img src="https://via.placeholder.com/80?text=もち" alt="もち" />
+      <p>もち<br>233円</p>
+    </div>
+    <div class="item" onclick="addToTotal('パフェ', 359)">
+      <img src="https://via.placeholder.com/80?text=パフェ" alt="パフェ" />
+      <p>パフェ<br>359円</p>
+    </div>
+  </div>
+
+  <div class="total" id="total">合計: 0円</div>
+  <button class="reset-button" onclick="resetTotal()">リセット</button>
+
+  <div class="receipt" id="receipt">
+    <div class="receipt-title">🧾 レシート</div>
+    <div id="receipt-list">（注文はまだありません）</div>
+    <div class="receipt-total" id="receipt-total"></div>
+  </div>
+
+  <script>
+    let total = 0;
+    const receipt = {};
+
+    function addToTotal(item, amount) {
+      total += amount;
+      document.getElementById('total').textContent = '合計: ' + total + '円';
+
+      if (receipt[item]) {
+        receipt[item].count += 1;
+      } else {
+        receipt[item] = { count: 1, price: amount };
+      }
+      updateReceipt();
+    }
+
+    function resetTotal() {
+      total = 0;
+      for (let item in receipt) {
+        delete receipt[item];
+      }
+      document.getElementById('total').textContent = '合計: ' + total + '円';
+      updateReceipt();
+    }
+
+    function updateReceipt() {
+      const receiptList = document.getElementById('receipt-list');
+      const receiptTotal = document.getElementById('receipt-total');
+      receiptList.textContent = '';
+
+      if (Object.keys(receipt).length === 0) {
+        receiptList.textContent = '（注文はまだありません）';
+        receiptTotal.textContent = '';
+        return;
+      }
+
+      let receiptText = '';
+      for (let item in receipt) {
+        const lineTotal = receipt[item].count * receipt[item].price;
+        receiptText += `${item.padEnd(8)} ${receipt[item].count}個 × ${receipt[item].price}円 = ${lineTotal}円\n`;
+      }
+      receiptList.textContent = receiptText;
+      receiptTotal.textContent = `合計金額: ${total}円`;
+    }
+  </script>
+</body>
+</html>
